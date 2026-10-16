@@ -1,0 +1,77 @@
+{
+  "greeting": {
+    "morning": "Good morning.",
+    "afternoon": "Good afternoon.",
+    "evening": "Good evening.",
+    "question": "Where would you like to be by tonight?"
+  },
+  "speak": "Ask me anything about the journey. I answer from a short script for now; a person reads every request.",
+  "fallback": {
+    "text": "That one is for a person at the desk. Shall I start a request for you?",
+    "action": { "label": "Start a request", "go": "plan" }
+  },
+  "intents": [
+    {
+      "keys": ["dark", "sunset", "daylight", "light", "night"],
+      "text": "Sunset in Alpina is at {sunset} today. Leave Geneva by {leaveBy} and you land with light to spare.",
+      "textNoData": "Tell me your date and the desk will time the landing before sunset.",
+      "action": { "label": "See the timing", "go": "route/flight" }
+    },
+    {
+      "keys": ["ski", "skis", "board", "equipment", "luggage", "bag", "bags"],
+      "text": "Skis travel with you, tagged to the chalet. You see them again in the boot room.",
+      "action": { "label": "Show me Alpina", "go": "route/alpina" }
+    },
+    {
+      "keys": ["helicopter", "heli", "valtor", "fly up", "ridge"],
+      "text": "From the apron at Alpina a twin-engine helicopter takes you up to Valtor in about twelve minutes, when the weather allows.",
+      "action": { "label": "Show me Valtor", "go": "route/valtor" }
+    },
+    {
+      "keys": ["weather", "snow", "cold", "temperature", "wind"],
+      "text": "Right now in Alpina: {weather}. The mountain team checks again an hour before you land.",
+      "textNoData": "I can't reach the weather service at the moment. The mountain team checks it an hour before you land.",
+      "action": null
+    },
+    {
+      "keys": ["price", "cost", "quote", "how much", "fee", "expensive"],
+      "text": "Every journey is quoted for your group. Tell me the date and the number of guests and the desk sends a figure.",
+      "action": { "label": "Plan a journey", "go": "plan" }
+    },
+    {
+      "keys": ["dog", "dogs", "pet", "pets", "cat"],
+      "text": "Dogs are welcome in the cabin and the car. Tell the desk their size so we choose the right vehicle.",
+      "action": { "label": "Plan a journey", "go": "plan" }
+    },
+    {
+      "keys": ["how long", "duration", "minutes", "hours", "fast"],
+      "text": "In the sample journey, Geneva to the chalet door takes eighty-one minutes.",
+      "action": { "label": "Follow it stop by stop", "go": "route/geneva" }
+    },
+    {
+      "keys": ["chalet", "hotel", "stay", "door", "arrive"],
+      "text": "The car stops at your door. The heating has been on since the afternoon and the fire is lit as you leave the pad.",
+      "action": { "label": "Show me the chalet", "go": "route/chalet" }
+    },
+    {
+      "keys": ["private", "privacy", "discreet", "alone", "confidential"],
+      "text": "Your group travels alone at every stage. Names and times stay with the desk.",
+      "action": null
+    },
+    {
+      "keys": ["who are you", "human", "real", "ai", "robot", "person", "bot"],
+      "text": "I'm {name}, an AI concierge. I can show you how a journey works. Requests always go to a person at the desk.",
+      "action": { "label": "Speak with the desk", "go": "plan" }
+    },
+    {
+      "keys": ["geneva", "london", "paris", "from", "depart", "airport"],
+      "text": "The sample journey leaves from Geneva. The desk plans from any airport that can take a private jet.",
+      "action": { "label": "Show me Geneva", "go": "route/geneva" }
+    },
+    {
+      "keys": ["hello", "hi", "hey", "bonjour", "merhaba", "evening", "morning"],
+      "text": "Hello. Ask me about the route, the weather in Alpina, or how the desk plans a journey.",
+      "action": null
+    }
+  ]
+}

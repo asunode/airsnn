@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+.AppleDouble
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.directory
+*~
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.code-workspace
+
+# Local tooling
+.claude/
+node_modules/
+*.log
+.env
+.env.*

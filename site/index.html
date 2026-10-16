@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AIRSNN · Private journeys to Alpina</title>
+  <meta name="description" content="Design prototype. A private journey to fictional Alpina, from Geneva to the chalet door, coordinated by one desk.">
+  <meta name="theme-color" content="#0a1020">
+  <link rel="icon" href="data:,"><!-- no favicon yet (M1 mark to come); stops the /favicon.ico 404 -->
+  <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Hint only: the portrait itself is set in data/site.json ("portrait"). Keep the two in step. -->
+  <link rel="preload" as="image" type="image/avif" imagesrcset="img/concierge-600.avif 600w, img/concierge-900.avif 900w, img/concierge-1086.avif 1086w" imagesizes="(max-width: 860px) 100vw, 40vw" fetchpriority="high">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+    /* Decide before first paint whether the gate shows (first visit only). */
+    (function () {
+      var d = document.documentElement, seen = false;
+      try { seen = localStorage.getItem('airsnn.intro_seen') === '1'; } catch (e) {}
+      if (/[?&]gate=1/.test(location.search)) seen = false;
+      d.classList.add(seen ? 'no-gate' : 'has-gate', 'js');
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#desk">Skip to the desk</a>
+
+  <!-- Fixed map: the spine of the page -->
+  <div class="map-stage" aria-hidden="true">
+    <div id="map" class="map"></div>
+    <div class="map-veil"></div>
+  </div>
+
+  <!-- Gate: lounge glass, first visit only -->
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <picture class="gate__photo">
+      <source type="image/avif" srcset="img/hero-jet-800.avif 800w, img/hero-jet-1200.avif 1200w, img/hero-jet-1672.avif 1672w" sizes="100vw">
+      <img src="img/hero-jet-1200.webp" srcset="img/hero-jet-800.webp 800w, img/hero-jet-1200.webp 1200w, img/hero-jet-1672.webp 1672w" sizes="100vw" alt="" fetchpriority="high">
+    </picture>
+    <div class="gate__fog" aria-hidden="true"></div>
+    <div class="gate__inner">
+      <p class="wordmark wordmark--gate" id="gate-title">AIRSNN</p>
+      <p class="gate__line">Private journeys to Alpina</p>
+      <button class="btn btn--glass gate__enter" type="button" id="gate-enter">Enter the lounge</button>
+    </div>
+    <button class="gate__skip" type="button" id="gate-skip">Skip</button>
+    <div class="gate__note">
+      <p>Design prototype. Alpina is fictional.</p>
+      <p>A design prototype by ASUNODE, published as an open project on GitHub. <a class="gh-link" href="https://github.com/asunode/airsnn" target="_blank" rel="noopener">github.com/asunode/airsnn</a></p>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <header class="bar" id="bar">
+    <a class="wordmark" href="#desk" data-go="desk" aria-label="AIRSNN, back to the desk">AIRSNN</a>
+    <div class="bar__clocks">
+      <p class="clock clock--live" id="clock-alpina">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="clock__place">Alpina</span>
+        <span class="num" data-clock="alpina">--:--</span>
+        <span class="weather" id="weather" hidden></span>
+      </p>
+      <p class="clock clock--you">
+        <span class="clock__place">You</span>
+        <span class="num" data-clock="you">--:--</span>
+      </p>
+    </div>
+    <a class="btn btn--amber bar__cta" href="#plan" data-go="plan">Plan a journey</a>
+  </header>
+
+  <!-- Map credit: visible whenever the map is the scene (OpenStreetMap / OpenFreeMap / terrain) -->
+  <p class="map-credit">
+    <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a>
+    <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a>
+    <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>
+    <a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank" rel="noopener">Terrain: Mapzen</a>
+  </p>
+
+  <!-- Resume strip for returning visitors -->
+  <div class="resume" id="resume" hidden>
+    <p>Your route, where you left it: <strong id="resume-stop"></strong></p>
+    <button type="button" class="link" id="resume-desk">Start from the desk</button>
+    <button type="button" class="resume__close" id="resume-close" aria-label="Close">×</button>
+  </div>
+
+  <main id="main">
+
+    <!-- 1. Concierge desk -->
+    <section class="desk" id="desk" aria-labelledby="desk-headline">
+      <figure class="concierge" id="concierge">
+        <div class="concierge__window" aria-hidden="true">
+          <picture>
+            <source type="image/avif" srcset="img/hero-jet-800.avif 800w, img/hero-jet-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw">
+            <img src="img/hero-jet-800.webp" alt="" loading="lazy">
+          </picture>
+        </div>
+        <div class="concierge__light" aria-hidden="true"></div>
+        <svg class="concierge__figure" viewBox="0 0 400 520" aria-hidden="true" focusable="false">
+          <defs>
+            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+            <linearGradient id="rim" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#f5b469" stop-opacity=".55"/>
+              <stop offset=".18" stop-color="#f5b469" stop-opacity="0"/>
+              <stop offset=".82" stop-color="#a9bad6" stop-opacity="0"/>
+              <stop offset="1" stop-color="#a9bad6" stop-opacity=".45"/>
+            </linearGradient>
+          </defs>
+          <g filter="url(#soft)">
+            <path d="M200 92c-38 0-62 30-62 70 0 30 12 56 30 70l-4 26c-62 12-112 42-128 96L22 520h356l-14-166c-16-54-66-84-128-96l-4-26c18-14 30-40 30-70 0-40-24-70-62-70z" fill="#060a14"/>
+            <path d="M200 92c-38 0-62 30-62 70 0 30 12 56 30 70l-4 26c-62 12-112 42-128 96L22 520h356l-14-166c-16-54-66-84-128-96l-4-26c18-14 30-40 30-70 0-40-24-70-62-70z" fill="url(#rim)"/>
+          </g>
+        </svg>
+        <div class="concierge__desk" aria-hidden="true"></div>
+        <figcaption class="concierge__tag">
+          <span class="concierge__name" data-concierge-name>Elise</span>
+          <span>AIRSNN Desk, <strong>AI concierge</strong></span>
+        </figcaption>
+        <p class="placeholder-tag" data-placeholder>Placeholder: portrait to come</p>
+      </figure>
+
+      <div class="desk__talk">
+        <h1 class="desk__headline" id="desk-headline" aria-live="polite">
+          <span class="desk__hello" data-greet>Good evening.</span>
+          <em class="desk__question" data-question>Where would you like to be tonight?</em>
+        </h1>
+        <p class="desk__action" id="desk-action" hidden></p>
+
+        <div class="intents" role="group" aria-label="What would you like to do?">
+          <a class="btn btn--amber" href="#plan" data-go="plan">Plan a journey</a>
+          <a class="btn btn--glass" href="#route/geneva" data-go="route/geneva">Show me the route</a>
+          <button class="btn btn--glass" type="button" id="speak">Speak with the desk</button>
+        </div>
+
+        <form class="ask" id="ask" autocomplete="off">
+          <label class="visually-hidden" for="ask-input">Ask the desk</label>
+          <input id="ask-input" name="q" type="text" placeholder="Ask the desk anything, e.g. “Can I land before dark?”" maxlength="160">
+          <button class="ask__send" type="submit">Ask</button>
+        </form>
+        <p class="desk__fineprint">Scripted answers for now. A person replies to every request.</p>
+      </div>
+      <p class="desk__scroll" aria-hidden="true">Scroll for the route</p>
+    </section>
+
+    <!-- 2. Route: rendered from data/sample-journey.json -->
+    <section class="route" id="route" aria-labelledby="route-title">
+      <h2 class="visually-hidden" id="route-title">The route, a sample journey</h2>
+      <nav class="rail" id="rail" aria-label="Route stops">
+        <p class="sample-flag"><span class="sample-flag__dot" aria-hidden="true"></span><span><span data-sample-label>Sample journey</span>, not live</span></p>
+        <ol class="rail__list" id="rail-list"></ol>
+      </nav>
+      <div class="route__steps" id="route-steps"></div>
+    </section>
+
+    <!-- Scale scenes: jet, then cabin (fixed layer, driven by the route steps) -->
+    <div class="scene" id="scene" aria-hidden="true">
+      <div class="scene__jet">
+        <picture>
+          <source type="image/avif" srcset="img/hero-jet-1200.avif 1200w, img/hero-jet-1672.avif 1672w" sizes="100vw">
+          <img src="img/hero-jet-1672.webp" alt="" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div class="scene__cabin">
+        <picture>
+          <source type="image/avif" srcset="img/kabin-800.avif 800w, img/kabin-1200.avif 1200w, img/kabin-1672.avif 1672w" sizes="100vw">
+          <img src="img/kabin-1672.webp" srcset="img/kabin-800.webp 800w, img/kabin-1200.webp 1200w, img/kabin-1672.webp 1672w" sizes="100vw" alt="" loading="lazy" decoding="async">
+        </picture>
+      </div>
+    </div>
+
+    <!-- 3. How it works -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="how__sticky">
+        <div class="how__head">
+          <h2 class="how__title" id="how-title">How the desk works</h2>
+          <p class="how__counter num" id="how-counter">Step 1 of 4</p>
+        </div>
+        <div class="how__words" id="how-words"></div>
+        <div class="diagram" id="diagram" role="tablist" aria-label="Steps"></div>
+        <div class="ops" id="ops" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 4. Fleet and records -->
+    <section class="fleet" id="fleet" aria-labelledby="fleet-title">
+      <div class="fleet__head">
+        <h2 class="fleet__title" id="fleet-title">The fleet, <em>as it was that evening</em></h2>
+        <p class="fleet__intro">Each picture is a record from the sample journey: where it was, how high, at what time. Open one to see it in full colour.</p>
+      </div>
+      <ul class="fleet__grid" id="fleet-grid"></ul>
+    </section>
+
+    <!-- 5. Closing -->
+    <section class="arrival" id="arrival" aria-labelledby="arrival-title">
+      <div class="arrival__inner">
+        <p class="sample-flag"><span class="sample-flag__dot" aria-hidden="true"></span><span><span data-sample-label>Sample journey</span>, not live</span></p>
+        <ol class="arrival__rows" id="arrival-rows"></ol>
+        <h2 class="arrival__title" id="arrival-title">Journey complete. <em>Welcome to Alpina.</em></h2>
+        <p class="arrival__note">That was an example. Yours will have its own times.</p>
+        <a class="btn btn--amber" href="#plan" data-go="plan">Plan your own</a>
+      </div>
+    </section>
+
+    <!-- 6. Plan your own -->
+    <section class="plan" id="plan" aria-labelledby="plan-title">
+      <div class="plan__intro">
+        <h2 class="plan__title" id="plan-title">Plan your own, <em>in three short steps.</em></h2>
+        <p>A person from the desk replies within the hour.</p>
+        <p class="demo-flag">Demo: this form sends nothing. Nothing you type leaves this page.</p>
+        <ol class="plan__route" aria-label="Your route so far">
+          <li><span id="plan-from">Your airport</span><small>by jet</small></li>
+          <li><span>Alpina International</span><small id="plan-heli">by helicopter</small></li>
+          <li id="plan-valtor"><span>Valtor heliport</span><small>by car</small></li>
+          <li><span>Your door</span><small id="plan-arrive">before 17:30</small></li>
+        </ol>
+      </div>
+      <form class="plan__form" id="plan-form" novalidate>
+        <p class="plan__count num" id="plan-count">1 of 3</p>
+        <fieldset class="plan__step" data-step="1">
+          <legend>Where from, and when?</legend>
+          <label>Departure airport<input name="from" type="text" placeholder="Geneva" autocomplete="off"></label>
+          <label>Date<input name="date" type="date"></label>
+          <label>Guests<input name="guests" type="number" min="1" max="19" value="2"></label>
+        </fieldset>
+        <fieldset class="plan__step" data-step="2" hidden>
+          <legend>Anything we should know?</legend>
+          <label class="check"><input type="checkbox" name="skis"> Skis or boards</label>
+          <label class="check"><input type="checkbox" name="pets"> Travelling with a dog</label>
+          <label class="check"><input type="checkbox" name="heli" checked> Helicopter to Valtor, weather permitting</label>
+          <label>Arrive before<input name="arrive" type="time" value="17:30"></label>
+        </fieldset>
+        <fieldset class="plan__step" data-step="3" hidden>
+          <legend>How should the desk reach you?</legend>
+          <label>Name<input name="name" type="text" autocomplete="off"></label>
+          <label>Email or phone<input name="contact" type="text" autocomplete="off"></label>
+        </fieldset>
+        <div class="plan__done" id="plan-done" hidden tabindex="-1">
+          <p class="plan__done-title">Demo: request not sent.</p>
+          <p>In the live site this would go to the desk. Here nothing was stored or transmitted.</p>
+          <button type="button" class="link" id="plan-again">Start again</button>
+        </div>
+        <div class="plan__nav">
+          <button type="button" class="btn btn--glass" id="plan-back" hidden>Back</button>
+          <button type="button" class="btn btn--amber" id="plan-next">Continue</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>AIRSNN design prototype, October 2026. Alpina, Alpina International, Valtor and the journey shown are fictional. Only the Alpina clock and weather are live.</p>
+    <p class="foot__credits">Map © OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors. Terrain: Mapzen. Weather: Open-Meteo.</p>
+    <div class="foot__base">
+      <a class="wordmark" href="#desk" data-go="desk" aria-label="AIRSNN, back to the desk">AIRSNN</a>
+      <p>A design prototype by ASUNODE, published as an open project on GitHub. <a class="gh-link" href="https://github.com/asunode/airsnn" target="_blank" rel="noopener">github.com/asunode/airsnn</a></p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lb-title">
+    <div class="lightbox__media" id="lb-media"></div>
+    <div class="lightbox__meta">
+      <p class="lightbox__title" id="lb-title"></p>
+      <p class="lightbox__record num" id="lb-record"></p>
+    </div>
+    <div class="lightbox__nav">
+      <button type="button" class="btn btn--glass" id="lb-prev" aria-label="Previous">Previous</button>
+      <p class="num" id="lb-count"></p>
+      <button type="button" class="btn btn--glass" id="lb-next" aria-label="Next">Next</button>
+      <button type="button" class="btn btn--glass" id="lb-close" autofocus>Close</button>
+    </div>
+  </dialog>
+
+  <script>
+    /* Concierge portrait, from data/site.json ("portrait"), placed as soon as that file arrives
+       so the first picture on screen does not wait for the rest of the page's code.
+       "portrait" is a file path, or { src, widths, width, height } for src-<w>.avif / .webp copies. */
+    window.__site = fetch('data/site.json').then(function (r) { return r.json(); });
+    window.__site.then(function (site) {
+      var fig = document.getElementById('concierge'), p = site.concierge.portrait;
+      if (!p) { fig.classList.add('no-photo'); return; }
+      if (typeof p === 'string') p = { file: p };
+      var sizes = '(max-width: 860px) 100vw, 40vw';
+      var set = function (ext) { return p.widths.map(function (w) { return p.src + '-' + w + '.' + ext + ' ' + w + 'w'; }).join(', '); };
+      var pic = document.createElement('picture');
+      pic.className = 'concierge__photo';
+      pic.innerHTML = p.file ? '<img src="' + p.file + '">'
+        : '<source type="image/avif" srcset="' + set('avif') + '" sizes="' + sizes + '">'
+          + '<img src="' + p.src + '-' + (p.widths[1] || p.widths[0]) + '.webp" srcset="' + set('webp') + '" sizes="' + sizes + '" width="' + p.width + '" height="' + p.height + '" fetchpriority="high">';
+      var img = pic.querySelector('img');
+      img.alt = site.concierge.name + ', ' + site.concierge.role + '. Portrait generated with AI.';
+      fig.prepend(pic);
+      fig.classList.add('has-photo');
+      var loaded = function () { fig.classList.add('is-loaded'); };
+      if (img.complete) loaded(); else img.addEventListener('load', loaded, { once: true });
+    }).catch(function () { document.getElementById('concierge').classList.add('no-photo'); });
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

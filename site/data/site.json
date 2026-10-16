@@ -1,0 +1,26 @@
+{
+  "demo": true,
+  "concierge": {
+    "name": "Elise",
+    "role": "AI concierge",
+    "portrait": {
+      "src": "img/concierge",
+      "widths": [600, 900, 1086],
+      "width": 1086,
+      "height": 1448
+    }
+  },
+  "alpina": {
+    "name": "Alpina International",
+    "timezone": "Europe/Zurich",
+    "lat": 46.405,
+    "lon": 8.135
+  },
+  "weather": {
+    "endpoint": "https://api.open-meteo.com/v1/forecast",
+    "cacheMinutes": 15
+  },
+  "form": {
+    "send": false
+  }
+}

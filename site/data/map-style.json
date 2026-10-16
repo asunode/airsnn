@@ -1,0 +1,350 @@
+{
+ "version": 8,
+ "name": "AIRSNN night",
+ "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+ "sources": {
+  "omt": {
+   "type": "vector",
+   "url": "https://tiles.openfreemap.org/planet"
+  },
+  "terrain": {
+   "type": "raster-dem",
+   "tiles": [
+    "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+   ],
+   "encoding": "terrarium",
+   "tileSize": 256,
+   "maxzoom": 13
+  },
+  "dem": {
+   "type": "raster-dem",
+   "tiles": [
+    "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+   ],
+   "encoding": "terrarium",
+   "tileSize": 256,
+   "maxzoom": 13,
+   "attribution": "Terrain: Mapzen / AWS Terrain Tiles"
+  }
+ },
+ "terrain": {
+  "source": "terrain",
+  "exaggeration": 1.3
+ },
+ "sky": {
+  "sky-color": "#0a1020",
+  "horizon-color": "#2a3a5e",
+  "fog-color": "#111b33",
+  "sky-horizon-blend": 0.7,
+  "horizon-fog-blend": 0.5,
+  "fog-ground-blend": 0.55
+ },
+ "layers": [
+  {
+   "id": "bg",
+   "type": "background",
+   "paint": {
+    "background-color": "#0f1830"
+   }
+  },
+  {
+   "id": "glacier",
+   "type": "fill",
+   "source": "omt",
+   "source-layer": "landcover",
+   "filter": [
+    "in",
+    [
+     "get",
+     "subclass"
+    ],
+    [
+     "literal",
+     [
+      "glacier",
+      "ice_shelf"
+     ]
+    ]
+   ],
+   "paint": {
+    "fill-color": "#1a2540",
+    "fill-opacity": 0.7
+   }
+  },
+  {
+   "id": "hillshade",
+   "type": "hillshade",
+   "source": "dem",
+   "paint": {
+    "hillshade-shadow-color": "#03060e",
+    "hillshade-highlight-color": "#3b4f7c",
+    "hillshade-accent-color": "#0a1020",
+    "hillshade-exaggeration": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     6,
+     0.72,
+     12,
+     0.75
+    ],
+    "hillshade-illumination-direction": 315
+   }
+  },
+  {
+   "id": "water",
+   "type": "fill",
+   "source": "omt",
+   "source-layer": "water",
+   "paint": {
+    "fill-color": "#060b17"
+   }
+  },
+  {
+   "id": "waterway",
+   "type": "line",
+   "source": "omt",
+   "source-layer": "waterway",
+   "minzoom": 9,
+   "paint": {
+    "line-color": "#0f1a30",
+    "line-width": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     9,
+     0.4,
+     14,
+     1.6
+    ]
+   }
+  },
+  {
+   "id": "roads-major",
+   "type": "line",
+   "source": "omt",
+   "source-layer": "transportation",
+   "minzoom": 8,
+   "filter": [
+    "in",
+    [
+     "get",
+     "class"
+    ],
+    [
+     "literal",
+     [
+      "motorway",
+      "trunk",
+      "primary"
+     ]
+    ]
+   ],
+   "paint": {
+    "line-color": "#a9bad6",
+    "line-opacity": 0.12,
+    "line-width": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     8,
+     0.4,
+     14,
+     1.4
+    ]
+   }
+  },
+  {
+   "id": "roads-minor",
+   "type": "line",
+   "source": "omt",
+   "source-layer": "transportation",
+   "minzoom": 12,
+   "filter": [
+    "in",
+    [
+     "get",
+     "class"
+    ],
+    [
+     "literal",
+     [
+      "secondary",
+      "tertiary",
+      "minor"
+     ]
+    ]
+   ],
+   "paint": {
+    "line-color": "#a9bad6",
+    "line-opacity": 0.08,
+    "line-width": 0.8
+   }
+  },
+  {
+   "id": "runways",
+   "type": "line",
+   "source": "omt",
+   "source-layer": "aeroway",
+   "filter": [
+    "==",
+    [
+     "get",
+     "class"
+    ],
+    "runway"
+   ],
+   "paint": {
+    "line-color": "#a9bad6",
+    "line-opacity": 0.35,
+    "line-width": [
+     "interpolate",
+     [
+      "linear"
+     ],
+     [
+      "zoom"
+     ],
+     9,
+     1,
+     14,
+     10
+    ]
+   }
+  },
+  {
+   "id": "border",
+   "type": "line",
+   "source": "omt",
+   "source-layer": "boundary",
+   "filter": [
+    "all",
+    [
+     "==",
+     [
+      "get",
+      "admin_level"
+     ],
+     2
+    ],
+    [
+     "!=",
+     [
+      "get",
+      "maritime"
+     ],
+     1
+    ]
+   ],
+   "paint": {
+    "line-color": "#a9bad6",
+    "line-opacity": 0.22,
+    "line-width": 0.8,
+    "line-dasharray": [
+     3,
+     2
+    ]
+   }
+  },
+  {
+   "id": "cities",
+   "type": "symbol",
+   "source": "omt",
+   "source-layer": "place",
+   "maxzoom": 9,
+   "filter": [
+    "all",
+    [
+     "==",
+     [
+      "get",
+      "class"
+     ],
+     "city"
+    ],
+    [
+     "<=",
+     [
+      "get",
+      "rank"
+     ],
+     6
+    ],
+    [
+     "!=",
+     [
+      "get",
+      "name"
+     ],
+     "Gen\u00e8ve"
+    ],
+    [
+     "within",
+     {
+      "type": "Polygon",
+      "coordinates": [
+       [
+        [
+         5.6,
+         45.7
+        ],
+        [
+         10.6,
+         45.7
+        ],
+        [
+         10.6,
+         47.85
+        ],
+        [
+         5.6,
+         47.85
+        ],
+        [
+         5.6,
+         45.7
+        ]
+       ]
+      ]
+     }
+    ]
+   ],
+   "layout": {
+    "text-field": [
+     "coalesce",
+     [
+      "get",
+      "name:en"
+     ],
+     [
+      "get",
+      "name"
+     ]
+    ],
+    "text-font": [
+     "Noto Sans Regular"
+    ],
+    "text-size": 12,
+    "text-letter-spacing": 0.04
+   },
+   "paint": {
+    "text-color": "#a9bad6",
+    "text-opacity": 0.85,
+    "text-halo-color": "#0a1020",
+    "text-halo-width": 1.2
+   }
+  }
+ ]
+}

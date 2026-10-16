@@ -1,0 +1,187 @@
+{
+  "sample": true,
+  "label": "Sample journey",
+  "disclaimer": "An example journey. Times and figures are illustrative, not live.",
+  "date": "2027-02-13",
+  "utcOffset": "+01:00",
+  "group": "Three guests, two ski bags",
+
+  "places": {
+    "geneva": { "name": "Geneva", "lngLat": [6.109, 46.238], "alt": "430 m", "kind": "departure" },
+    "alpina": { "name": "Alpina International", "lngLat": [8.135, 46.405], "alt": "1,055 m", "kind": "airport" },
+    "valtor": { "name": "Valtor heliport", "lngLat": [8.150, 46.430], "alt": "1,455 m", "kind": "heliport" },
+    "chalet": { "name": "Chalet", "lngLat": [8.150, 46.440], "alt": "1,744 m", "kind": "chalet" }
+  },
+
+  "legs": [
+    { "id": "jet", "mode": "Jet", "from": "geneva", "to": "alpina", "arc": 0.18 },
+    { "id": "heli", "mode": "Helicopter", "from": "alpina", "to": "valtor", "arc": 0.08 },
+    { "id": "car", "mode": "Car", "from": "valtor", "to": "chalet",
+      "path": [[8.150, 46.430], [8.1565, 46.4325], [8.1530, 46.4352], [8.1585, 46.4375], [8.1545, 46.4392], [8.150, 46.440]] }
+  ],
+
+  "steps": [
+    {
+      "id": "overview",
+      "rail": null,
+      "padding": "centre",
+      "camera": { "center": [7.2, 46.33], "zoom": 8.15, "pitch": 52, "bearing": -14 },
+      "cameraMobile": { "center": [7.2, 46.3], "zoom": 6.35, "pitch": 46, "bearing": -14 },
+      "terrain": 3.2,
+      "emphasis": true,
+      "progress": 0,
+      "title": "Geneva to the chalet door,",
+      "titleItalic": "held by one desk.",
+      "body": "Scroll to follow one journey, stop by stop. Every time on this route is an example.",
+      "panels": []
+    },
+    {
+      "id": "geneva",
+      "rail": "Geneva",
+      "camera": { "center": [6.109, 46.238], "zoom": 11.2, "pitch": 30, "bearing": -20 },
+      "progress": 0,
+      "tag": { "from": "Geneva", "to": "Alpina International", "mode": "Jet", "time": "16:20", "note": "Stand 3. Wheels up 16:20." },
+      "body": "The jet is fuelled before you reach the terminal. Your bags go straight to the hold; you go straight to your seat.",
+      "panels": [
+        { "value": "12 min", "label": "Kerb to seat", "sentence": "Car to aircraft door at the private terminal. No queue in between." },
+        { "value": "3", "label": "Guests", "sentence": "Two adults and one teenager. Two ski bags tagged to the chalet." }
+      ]
+    },
+    {
+      "id": "flight",
+      "rail": null,
+      "camera": { "center": [7.25, 46.33], "zoom": 7.3, "pitch": 20, "bearing": 0 },
+      "cameraMobile": { "center": [7.62, 46.33], "zoom": 6.0 },
+      "progress": 1,
+      "tag": { "from": "Geneva", "to": "Alpina International", "mode": "Jet", "time": "16:20", "note": "41 minutes over the Bernese Alps." },
+      "body": "While you fly, the mountain team checks the ridge wind and the helicopter is moved to stand 2.",
+      "panels": [
+        { "value": "41 min", "label": "Gate to gate", "sentence": "Cruise at 31,000 ft, descending over the Rhône valley." },
+        { "value": "−4 °C", "label": "Forecast at Alpina", "sentence": "Runway cleared of snow at 16:40, twenty minutes before you land." }
+      ]
+    },
+    {
+      "id": "alpina",
+      "rail": "Alpina International",
+      "camera": { "center": [8.135, 46.405], "zoom": 12.3, "pitch": 58, "bearing": 52 },
+      "cameraMobile": { "zoom": 11.8, "pitch": 45 },
+      "progress": 1,
+      "tag": { "from": "Alpina International", "to": "Valtor heliport", "mode": "Helicopter", "time": "17:01", "note": "Landed 17:01. Helicopter on stand 2." },
+      "body": "Your host meets you at the aircraft door. Nine minutes later you are walking to the helicopter; your bags are already on board.",
+      "panels": [
+        { "value": "1,055 m", "label": "Runway elevation", "sentence": "The valley floor, the last flat ground before the climb." },
+        { "value": "9 min", "label": "Aircraft to helicopter", "sentence": "Bags move with you, not after you." }
+      ]
+    },
+    {
+      "id": "valtor",
+      "rail": "Valtor heliport",
+      "camera": { "center": [8.150, 46.430], "zoom": 12.9, "pitch": 66, "bearing": 18 },
+      "cameraMobile": { "zoom": 12.4, "pitch": 50 },
+      "progress": 2,
+      "tag": { "from": "Valtor heliport", "to": "Chalet", "mode": "Car", "time": "17:24", "note": "On the pad 17:24. Car 3 waiting." },
+      "body": "Twelve minutes up the valley side. On the pad, Car 3 is warm, chains fitted, doors open.",
+      "panels": [
+        { "value": "8 kt", "label": "Wind at Valtor", "sentence": "Calm enough to land on the slope. Pilot cleared at 16:48." },
+        { "value": "1,455 m", "label": "Pad elevation", "sentence": "Four hundred metres above the runway you left twenty minutes ago." }
+      ]
+    },
+    {
+      "id": "chalet",
+      "rail": "Chalet",
+      "camera": { "center": [8.150, 46.440], "zoom": 13.6, "pitch": 68, "bearing": -24 },
+      "cameraMobile": { "zoom": 13.1, "pitch": 52 },
+      "progress": 3,
+      "tag": { "from": "Valtor heliport", "to": "Chalet", "mode": "Car", "time": "17:41", "note": "At the door 17:41." },
+      "body": "The fire was lit at 17:30, when the car left the pad. Skis are in the boot room before you take your coat off.",
+      "panels": [
+        { "value": "81 min", "label": "Wheels up to door", "sentence": "One jet, one helicopter, one car, and nobody waiting for any of them." },
+        { "value": "21 °C", "label": "Inside", "sentence": "Heating on since 15:00. Fire lit at 17:30." }
+      ]
+    },
+    {
+      "id": "jet",
+      "rail": null,
+      "scene": "jet",
+      "progress": 3,
+      "title": "Stand 3,",
+      "titleItalic": "one scale closer.",
+      "body": "The same journey from the apron at Alpina International: steps down, engines cooling, the helicopter warming behind it.",
+      "panels": []
+    },
+    {
+      "id": "cabin",
+      "rail": null,
+      "scene": "cabin",
+      "progress": 3,
+      "title": "The cabin,",
+      "titleItalic": "ready before you are.",
+      "body": "Two seats facing, your names on the card, the route printed underneath.",
+      "panels": []
+    }
+  ],
+
+  "how": [
+    {
+      "id": "ask", "time": "10:12", "lightName": "Late morning", "word": "Ask", "italic": "in one sentence.",
+      "summary": "You tell the desk where and when. One sentence is enough.",
+      "light": "noon",
+      "ops": {
+        "Flight desk": ["Request received 10:12", "Geneva slot requested for 16:20"],
+        "Mountain ops": ["Valtor forecast pulled", "Sunset at Alpina noted: 17:38"],
+        "Ground": ["Chalet confirmed for three guests", "Ski bags: two"]
+      }
+    },
+    {
+      "id": "plan", "time": "15:02", "lightName": "Afternoon", "word": "Plan", "italic": "runway to ridge.",
+      "summary": "One plan joins the jet, the helicopter and the car, with times that depend on each other.",
+      "light": "afternoon",
+      "ops": {
+        "Flight desk": ["Slot confirmed 15:02", "Crew briefed on Alpina approach"],
+        "Mountain ops": ["Helicopter booked, stand 2", "Landing window 17:10 to 17:40"],
+        "Ground": ["Car 3 booked, chains fitted", "Chalet heating set for 15:00"]
+      }
+    },
+    {
+      "id": "hold", "time": "16:48", "lightName": "Blue hour", "word": "Hold", "italic": "every moving part.",
+      "summary": "When one part moves, the others move with it. You are told once, not three times.",
+      "light": "dusk",
+      "ops": {
+        "Flight desk": ["Wheels up 16:20", "Landing estimate 17:01"],
+        "Mountain ops": ["Helicopter de-iced 15:35", "Wind at Valtor 8 kt, cleared"],
+        "Ground": ["Car 3 moved to Valtor pad 17:05", "Fire lit 17:30"]
+      }
+    },
+    {
+      "id": "deliver", "time": "17:41", "lightName": "Night", "word": "Deliver", "italic": "at the door.",
+      "summary": "The journey ends at your door, not at the airport.",
+      "light": "night",
+      "ops": {
+        "Flight desk": ["Aircraft on stand 3, 17:01", "Crew released"],
+        "Mountain ops": ["Helicopter on the pad 17:24", "Helicopter stood down 17:30"],
+        "Ground": ["At the door 17:41", "Skis in the boot room 17:46"]
+      }
+    }
+  ],
+
+  "fleet": [
+    { "id": "jet-stand", "title": "Jet on stand 3", "type": "Representative light jet", "image": "img/hero-jet", "art": null, "focus": "70% 55%",
+      "record": { "alt": "1,055 m", "time": "17:01", "route": "Geneva to Alpina", "temp": "−4 °C" } },
+    { "id": "pc24", "title": "Pilatus PC-24", "type": "Private aircraft, short alpine runways", "image": "img/pc24", "art": null, "focus": "34% 40%",
+      "record": { "alt": "31,000 ft", "time": "16:38", "route": "Over the Bernese Alps", "temp": "−52 °C" } },
+    { "id": "h145", "title": "Airbus H145", "type": "Twin-engine helicopter", "image": "img/h145", "art": null, "focus": "42% 50%",
+      "record": { "alt": "1,455 m", "time": "17:24", "route": "Alpina to Valtor", "temp": "−6 °C" } },
+    { "id": "car3", "title": "Car 3", "type": "Winter-capable chauffeured SUV", "image": "img/car3", "art": null, "focus": "52% 62%",
+      "record": { "alt": "1,620 m", "time": "17:33", "route": "Valtor to the chalet", "temp": "−7 °C" } },
+    { "id": "cabin", "title": "Cabin", "type": "Four seats, facing pairs", "image": "img/kabin", "art": null, "focus": "58% 55%",
+      "record": { "alt": "31,000 ft", "time": "16:44", "route": "Geneva to Alpina", "temp": "21 °C" } },
+    { "id": "chalet", "title": "Chalet door", "type": "Arrival", "image": "img/chalet-door", "art": null, "focus": "60% 50%",
+      "record": { "alt": "1,744 m", "time": "17:41", "route": "End of the route", "temp": "−8 °C" } }
+  ],
+
+  "closing": [
+    { "mode": "Jet", "what": "landed at Alpina", "time": "17:01" },
+    { "mode": "Helicopter", "what": "on the pad at Valtor", "time": "17:24" },
+    { "mode": "Car", "what": "at the chalet door", "time": "17:41" }
+  ]
+}
