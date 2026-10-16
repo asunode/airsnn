@@ -2,6 +2,8 @@
 
 A design prototype for a private-travel concierge: one evening journey from Geneva to a chalet door in the fictional Alpine resort of Alpina, told as a single scrolling place.
 
+**Live demo: [asunode.github.io/airsnn](https://asunode.github.io/airsnn/)**
+
 ![The concierge desk: Elise, an AI concierge, greets the visitor in a lounge at blue hour](docs/screens/00-hero-desk.webp)
 
 ## The idea
@@ -78,7 +80,7 @@ The prototype was built with [Claude Code](https://claude.com/claude-code), usin
 
 ## Live demo
 
-Coming soon at <https://asunode.github.io/airsnn/>.
+**<https://asunode.github.io/airsnn/>**
 
 ## Status
 
