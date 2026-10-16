@@ -1,6 +1,6 @@
-import { paintArt, artSVG } from './art.js';
-import { setupDesk, updateContext, answer, greetingFor, speak } from './desk.js';
-import { loadMapLibre, initMap, goToStep, arrivalCamera, resizeMap } from './map.js';
+import { paintArt, artSVG } from './art.js?v=202610161227';
+import { setupDesk, updateContext, answer, greetingFor, speak } from './desk.js?v=202610161227';
+import { loadMapLibre, initMap, goToStep, arrivalCamera, resizeMap } from './map.js?v=202610161227';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];

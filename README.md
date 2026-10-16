@@ -70,6 +70,8 @@ python3 -m http.server 8000
 
 Then open <http://localhost:8000>. Useful options: `?gate=1` shows the entrance again, `?hold` stops it from opening by itself.
 
+Before publishing a change to CSS or JS, run `scripts/bump-version.sh` from the repo root: it stamps a new `?v=` on our own CSS and JS links and module imports so returning visitors get the update (vendor files and fonts are left alone).
+
 ## How it was made
 
 The prototype was built with [Claude Code](https://claude.com/claude-code), using the Chrome DevTools MCP to drive and measure the page and the frontend-design skill for the visual direction. The process was:
