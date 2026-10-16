@@ -810,6 +810,8 @@ html[data-scene] main .route { z-index: 2; }
   .panel__sentence { font-size: .9375rem; }
   .step__body { display: none; }
   .stop-marker__alt { display: none; }
+  /* close stops on a phone: only the current stop is named, so no label peeks between the cards */
+  .map:not(.is-far) .stop-marker:not(.is-active) .stop-marker__name { opacity: 0; }
   /* Alpina sits near the right edge on a phone: its name goes to the left of the dot */
   .stop-marker[data-id="alpina"] .stop-marker__name { position: absolute; right: calc(100% + 10px); top: 50%; transform: translateY(-50%); }
 
