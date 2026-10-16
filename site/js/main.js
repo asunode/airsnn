@@ -372,6 +372,7 @@ let activeStep = null;
 let arrivalStage = null;
 const zones = ['desk', 'route', 'how', 'fleet', 'arrival', 'plan'].map((id) => [id, $(`#${id}`)]);
 const stepEls = $$('.step');
+const glassUnder = [how, $('#fleet'), $('#plan'), $('.foot')];
 
 function progressIn(el) {
   const r = el.getBoundingClientRect();
@@ -436,6 +437,13 @@ function onScroll() {
   setHow(Math.min(3, Math.floor(hp * 4)));
   const light = how.dataset.light === 'noon' || how.dataset.light === 'afternoon';
   root.dataset.bar = zone === 'how' && light ? 'light' : 'dark';
+
+  // Top bar: glass floor once text sections slide under it (How only after its pin lets go)
+  const barH = $('#bar').offsetHeight;
+  root.toggleAttribute('data-glass', glassUnder.some((el) => {
+    const r = el.getBoundingClientRect();
+    return el === how ? r.bottom < innerHeight && r.bottom > 0 : r.top < barH && r.bottom > 0;
+  }));
 
   // Arrival: rows delivered one by one, then the title
   const arrival = $('#arrival');

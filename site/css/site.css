@@ -255,6 +255,18 @@ html[data-zone="route"]:not([data-scene]) .map-credit, html[data-zone="arrival"]
 }
 html[data-bar="light"] .bar { color: var(--ink); }
 html[data-bar="light"] .bar::before { background: linear-gradient(rgb(238 242 246 / .8), rgb(238 242 246 / 0)); }
+/* Glass floor: only while text sections scroll under the bar (desk and map keep the gradient) */
+.bar::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--glass); border-bottom: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  opacity: 0; transition: opacity var(--t-fast) var(--ease-inout);
+}
+html[data-bar="light"] .bar::after { background: rgb(238 242 246 / .65); border-bottom-color: rgb(10 16 32 / .08); }
+html[data-glass] .bar::after { opacity: 1; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .bar::after { background: var(--night-2); }
+}
 .bar__clocks { margin-left: auto; display: flex; gap: 22px; align-items: baseline; font-size: var(--fs-small); }
 .clock { margin: 0; display: inline-flex; gap: 8px; align-items: baseline; }
 .clock__place { color: var(--mist); }
